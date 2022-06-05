@@ -33,12 +33,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
 
       body: TabBarView(controller: tabController, children: const [
-        CustomTabBarView(),
-        Center(child: Text('data')),
-        Center(child: Text('data')),
-        Center(child: Text('data')),
-        Center(child: Text('data')),
-        Center(child: Text('data')),
+        CustomTabBarView(category: 'all'),
+        CustomTabBarView(category: 'tech'),
+        CustomTabBarView(category: 'business'),
+        CustomTabBarView(category: 'politics'),
+        CustomTabBarView(category: 'science'),
+        CustomTabBarView(category: 'sport'),
       ]),
 
       //buttom navbar

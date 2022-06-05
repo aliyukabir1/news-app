@@ -10,14 +10,24 @@ class NewsServices {
   Map<String, String> headers = {
     'authorization': '4e703fee62094a8fa563e24123f68cfd'
   };
-  Future<News> getNews() async {
-    final result = await http
-        .get(Uri.parse('https://newsapi.org/v2/everything?q=all?'),
-            headers: headers)
-        .then((response) {
-      News.fromJson(jsonDecode(response.body));
-    });
+  Future<List<News?>> getNews(String category) async {
+    List<News> finalListOfNew = [];
+    try {
+      final result = await http
+          .get(Uri.parse('https://newsapi.org/v2/everything?q=$category?'),
+              headers: headers)
+          .then((response) {
+        var listOfNews = jsonDecode(response.body)['articles'];
 
-    return result;
+        print(listOfNews);
+        for (var eachNew in listOfNews) {
+          finalListOfNew.add(News.fromJson(eachNew));
+        }
+        return finalListOfNew;
+      });
+      return result;
+    } catch (e) {
+      return finalListOfNew;
+    }
   }
 }

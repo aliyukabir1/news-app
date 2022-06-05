@@ -25,7 +25,7 @@ class _WebViewPageState extends State<WebViewPage> {
         backgroundColor: Colors.transparent,
       ),
       body: const Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0),
         child: WebView(
           initialUrl: 'https://google.com',
           javascriptMode: JavascriptMode.unrestricted,

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 class News {
   final String author;
   final String title;
@@ -17,6 +19,9 @@ class News {
       required this.publishedAt});
 
   factory News.fromJson(Map<String, dynamic> json) {
+    final convertedDate = DateTime.parse(json['publishedAt']);
+    final date = DateFormat.yMMMMEEEEd().format(convertedDate);
+
     return News(
         author: json['author'],
         title: json['title'],
@@ -24,6 +29,6 @@ class News {
         content: json['content'],
         url: json['url'],
         urlToImage: json['urlToImage'],
-        publishedAt: json['publishedAt']);
+        publishedAt: date);
   }
 }
