@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:news_app/model/news.dart';
+import 'package:news_app/services/news_services.dart';
 
 import 'components/components.dart';
 
@@ -32,14 +34,63 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         bottom: buildTabBar(),
       ),
 
-      body: TabBarView(controller: tabController, children: const [
-        CustomTabBarView(category: 'all'),
-        CustomTabBarView(category: 'tech'),
-        CustomTabBarView(category: 'business'),
-        CustomTabBarView(category: 'politics'),
-        CustomTabBarView(category: 'science'),
-        CustomTabBarView(category: 'sport'),
-      ]),
+      body: FutureBuilder<List<News?>>(
+          future: NewsServices().getHighLights(),
+          builder: (context, snapshot) {
+            final listOfHighlights = snapshot.data;
+
+            //  print(listOfHighlights);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: snapshot.connectionState == ConnectionState.waiting
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 20),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: listOfHighlights!
+                                .map((news) => HighlightBox(
+                                      date: news!.publishedAt,
+                                      title: news.title,
+                                      url: news.urlToImage,
+                                      linkToPost: news.url,
+                                      content: news.content,
+                                    ))
+                                .toList(),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          "Latest News",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Expanded(
+                          child: TabBarView(
+                              controller: tabController,
+                              children: const [
+                                CustomTabBarView(category: 'all'),
+                                CustomTabBarView(category: 'tech'),
+                                CustomTabBarView(category: 'health'),
+                                CustomTabBarView(category: 'politics'),
+                                CustomTabBarView(category: 'science'),
+                                CustomTabBarView(category: 'sport'),
+                              ]),
+                        )
+                      ],
+                    ),
+            );
+          }),
 
       //buttom navbar
       bottomNavigationBar: BottomNavigationBar(
@@ -75,7 +126,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           'All news ',
         ),
         Text('Tech'),
-        Text('Business'),
+        Text('Health'),
         Text('Politics'),
         Text('Science'),
         Text('Sport'),

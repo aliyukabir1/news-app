@@ -3,7 +3,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:flutter/material.dart';
 
 class WebViewPage extends StatefulWidget {
-  const WebViewPage({Key? key}) : super(key: key);
+  final String linkToPost;
+  const WebViewPage({Key? key, required this.linkToPost}) : super(key: key);
 
   @override
   State<WebViewPage> createState() => _WebViewPageState();
@@ -24,10 +25,10 @@ class _WebViewPageState extends State<WebViewPage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: WebView(
-          initialUrl: 'https://google.com',
+          initialUrl: widget.linkToPost,
           javascriptMode: JavascriptMode.unrestricted,
         ),
       ),
